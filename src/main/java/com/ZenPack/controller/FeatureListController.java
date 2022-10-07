@@ -1,8 +1,9 @@
 package com.ZenPack.controller;
 
 import com.ZenPack.model.FeaturedList;
-import com.ZenPack.service.ZenPackServiceImpl;
+import com.ZenPack.service.FeaturedListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,19 +14,22 @@ import java.util.List;
 public class FeatureListController {
 
     @Autowired
-    private ZenPackServiceImpl service;
+    private FeaturedListServiceImpl service;
 
     @PostMapping("/create_feature_list")
-    public ResponseEntity<FeaturedList> saveFeatureList(@RequestBody FeaturedList featuredList){
-        return service.saveFeatureList(featuredList);
+    @ResponseStatus(HttpStatus.CREATED)
+    public FeaturedList create(@RequestBody FeaturedList featuredList){
+        return service.save(featuredList);
     }
 
     @GetMapping("/get_feature_list")
-    public ResponseEntity<List<FeaturedList>> findAllFeatureList(){
+    @ResponseStatus(HttpStatus.OK)
+    public List<FeaturedList> findAllFeatureList(){
         return service.findAllList();
     }
 
-    @GetMapping("/feature_list")
+    @GetMapping("/search_by_name")
+    @ResponseStatus(HttpStatus.OK)
     public List<FeaturedList> findByName(@RequestParam String keyword){
         return service.findByKeyword(keyword);
     }

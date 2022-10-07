@@ -3,6 +3,7 @@ package com.ZenPack.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -17,7 +18,7 @@ public class FeaturedList {
     @Column(name = "feature_url")
     private String featureUrl;
     @Column(name = "created_time")
-    private Date createdTime=new Date();
+    private LocalDate createdTime;
     @Column(name = "created_by")
     private String createdBy;
 }

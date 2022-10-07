@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
 @Repository
-public interface ZenPackRepository extends JpaRepository<FeaturedList, Integer> {
+public interface FeaturedListRepository extends JpaRepository<FeaturedList, Integer> {
 
     //Custom Query
     @Query("SELECT p FROM FeaturedList p WHERE p.featureName LIKE %:keyword%")

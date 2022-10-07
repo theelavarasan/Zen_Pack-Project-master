@@ -59,6 +59,12 @@ public class FeaturedListServiceImplTest {
 
     @Test
     void save(){
+        FeaturedList list=new FeaturedList();
+        list.setId(1);
+        list.setFeatureName("Project Management");
+        list.setFeatureUrl(null);
+        list.setCreatedTime(LocalDate.of(2022, Month.OCTOBER,06));
+        list.setCreatedBy("Elavarasan");
         when(featuredListRepository.save(any(FeaturedList.class))).thenReturn(list);
         FeaturedList newList = featuredListServiceImpl.save(list);
 
@@ -78,11 +84,11 @@ public class FeaturedListServiceImplTest {
         assertNotNull(featuredLists);
     }
 
-    @Test
-    void getListByName(){
-        when(featuredListRepository.findByKeyword(anyString())).thenReturn(Optional.of(list));
-        FeaturedList existingList = featuredListServiceImpl.findByKeyword(list.getFeatureName());
-        assertNotNull(existingList);
-        assertThat(existingList.getFeatureName()).isNotEqualTo(null);
-    }
+//    @Test
+//    void getListByName(){
+//        when(featuredListRepository.findByKeyword(anyString())).thenReturn(Optional.of(list));
+//        FeaturedList existingList = featuredListServiceImpl.findByKeyword(list.getFeatureName());
+//        assertNotNull(existingList);
+//        assertThat(existingList.getFeatureName()).isNotEqualTo(null);
+
 }

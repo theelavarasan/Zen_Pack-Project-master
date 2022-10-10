@@ -11,5 +11,4 @@ public class ZenPackProjectApplication {
 		SpringApplication.run(ZenPackProjectApplication.class, args);
 	}
 
-
 }

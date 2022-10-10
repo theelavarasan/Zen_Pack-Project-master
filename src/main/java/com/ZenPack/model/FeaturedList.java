@@ -1,14 +1,17 @@
 package com.ZenPack.model;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "Featured_List")
 public class FeaturedList {
     @Id
@@ -19,7 +22,7 @@ public class FeaturedList {
     @Column(name = "feature_url")
     private String featureUrl;
     @Column(name = "created_time")
-    private LocalDate createdTime;
+    private Date createdTime=new Date();
     @Column(name = "created_by")
     private String createdBy;
 }

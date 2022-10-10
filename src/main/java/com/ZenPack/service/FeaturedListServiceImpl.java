@@ -4,11 +4,10 @@ import com.ZenPack.model.FeaturedList;
 import com.ZenPack.repository.FeaturedListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +35,33 @@ public class FeaturedListServiceImpl implements FeaturedListService  {
     public List<FeaturedList> findByKeyword(String keyword){
         return repository.findByKeyword(keyword);
     }
+
+    @Override
+    public FeaturedList updateList(FeaturedList list, int id) {
+        FeaturedList existingList = repository.findById(id).get();
+        existingList.setFeatureName(list.getFeatureName());
+        existingList.setFeatureUrl(list.getFeatureUrl());
+        existingList.setCreatedTime(list.getCreatedTime());
+        existingList.setCreatedBy(list.getCreatedBy());
+        return repository.save(existingList);
+    }
+
+    @Override
+    public FeaturedList updatedList(FeaturedList updatedList) {
+        return repository.save(updatedList);
+    }
+
+    @Override
+    public Optional<FeaturedList> getListById(int listId) {
+        return repository.findById(listId);
+    }
+
+    public void deleteList(int id) {
+        FeaturedList existingList=repository.findById(id).get();
+        repository.delete(existingList);
+    }
+
+
 
 
 }

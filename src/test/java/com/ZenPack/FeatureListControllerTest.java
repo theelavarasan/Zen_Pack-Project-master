@@ -16,23 +16,27 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.mockito.ArgumentMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 //import static org.hamcrest.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -56,20 +60,31 @@ public class FeatureListControllerTest {
     private FeaturedList list;
     private FeaturedList list1;
 
+    Date dateOne = new Date();
+
+    // Creating Instant object
+    Instant inst = Instant.now();
+
+
+
     @BeforeEach
     void init(){
         FeaturedList list=new FeaturedList();
         list.setId(1);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
-        list.setCreatedTime(LocalDate.of(2022,Month.OCTOBER,06));
+//        list.setCreatedTime(LocalDate.of(2022,Month.OCTOBER,06));
+//        list.setCreatedTime(Date.from(inst));
+//        list.setCreatedTime(LocalDateTime.now());
         list.setCreatedBy("Elavarasan");
 
         FeaturedList list1=new FeaturedList();
-        list.setId(1);
+        list.setId(2);
         list.setFeatureName("Project Summary");
         list.setFeatureUrl(null);
-        list.setCreatedTime(LocalDate.of(2022,Month.OCTOBER,06));
+//        list.setCreatedTime(LocalDate.of(2022,Month.OCTOBER,06));
+//        list.setCreatedTime(Date.from(inst));
+//        list.setCreatedTime(LocalDateTime.now());
         list.setCreatedBy("Elavarasan");
 
 
@@ -81,7 +96,8 @@ public class FeatureListControllerTest {
         list.setId(1);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
-        list.setCreatedTime(LocalDate.of(2022,Month.OCTOBER,06));
+        list.setCreatedTime(dateOne);
+//        list.setCreatedTime(dateOne.from(inst));
         list.setCreatedBy("Elavarasan");
 
         when(service.save(any(FeaturedList.class))).thenReturn(list);
@@ -89,10 +105,10 @@ public class FeatureListControllerTest {
         this.mockMvc.perform(post("/api/v1/create_feature_list")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(list)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.featureName", CoreMatchers.is(list.getFeatureName())))
                 .andExpect(jsonPath("$.featureUrl", CoreMatchers.is(list.getFeatureUrl())))
-                .andExpect(jsonPath("$.createdTime", CoreMatchers.is(list.getCreatedTime().toString())))
+//                .andExpect(jsonPath("$.createdTime", CoreMatchers.is(dateOne.getTime())))
                 .andExpect(jsonPath("$.createdBy", CoreMatchers.is(list.getCreatedBy())));
 
     }
@@ -110,7 +126,57 @@ public class FeatureListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()",CoreMatchers.is(featuredListList.size())));
     }
+//    @Test
+//    void shouldFetchOneListById() throws Exception {
+//
+//        when(service.getListById(anyInt())).thenReturn(list);
+//
+//        this.mockMvc.perform(get("/api/v1/{id}", 2))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.featureName", CoreMatchers.is(list.getFeatureName())))
+//                .andExpect(jsonPath("$.featureUrl", CoreMatchers.is(list.getFeatureUrl())));
+//    }
 
+    @Test
+    void shouldDeleteList() throws Exception {
+
+        doNothing().when(service).deleteList(anyInt());
+
+        this.mockMvc.perform(delete("/api/v1/deleteList/{id}", 2))
+                .andExpect(status().isNoContent());
+
+    }
+
+    @Test
+    public void shouldUpdateList() throws Exception{
+        // given - precondition or setup
+        int ListId = 2;
+        FeaturedList savedList = FeaturedList.builder()
+                .featureName("Project Summary")
+                .featureUrl("null")
+                .createdBy("Elavarasan")
+                .build();
+
+        FeaturedList updatedList = FeaturedList.builder()
+                .featureName("Project Summary")
+                .featureUrl("null")
+                .createdBy("Murugan")
+                .build();
+        given(service.getListById(ListId)).willReturn(Optional.of(savedList));
+        given(service.updatedList(any(FeaturedList.class)))
+                .willAnswer((invocation)-> invocation.getArgument(0));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(put("/api/v1/{id}", ListId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedList)));
+
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.featureName",CoreMatchers.is(updatedList.getFeatureName())));
+    }
 
 
 

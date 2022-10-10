@@ -14,12 +14,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +36,9 @@ public class FeaturedListRepositoryTest {
     private FeaturedList list;
     private FeaturedList list1;
 
+    // Creating Instant object
+    Instant inst = Instant.now();
+
 
     @Test
     @DisplayName("It Should save the list to database")
@@ -47,7 +48,8 @@ public class FeaturedListRepositoryTest {
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
 //        list.setCreatedTime(LocalDate.of(2022, Month.OCTOBER,06));
-        list.setCreatedTime(ZonedDateTime.now().toLocalDate());
+//        list.setCreatedTime(ZonedDateTime.now().toLocalDateTime());
+//        list.setCreatedTime(Date.from(inst));
         list.setCreatedBy("Elavarasan");
         FeaturedList newList = featuredListRepository.save(list);
         assertNotNull(newList);
@@ -62,5 +64,49 @@ public class FeaturedListRepositoryTest {
         assertNotNull(featuredLists);
         assertThat(featuredLists).isNotNull();
         assertEquals(22,featuredLists.size());
+    }
+
+    @Test
+    @DisplayName("It should update the list name with PROJECT")
+    void updateList() {
+        FeaturedList list=new FeaturedList();
+        list.setId(2);
+        list.setFeatureName("Project Management");
+        list.setFeatureUrl(null);
+        list.setCreatedBy("Elavarasan");
+
+        featuredListRepository.save(list);
+
+        FeaturedList existingMovie = featuredListRepository.findById(list.getId()).get();
+        existingMovie.setFeatureName("Project Management");
+        FeaturedList updatedList = featuredListRepository.save(existingMovie);
+
+        assertEquals("Project Management", updatedList.getFeatureName());
+    }
+
+    @Test
+    @DisplayName("It should delete the existing list")
+    void deleteList() {
+
+        FeaturedList list=new FeaturedList();
+        list.setId(30);
+        list.setFeatureName("Project Management");
+        list.setFeatureUrl(null);
+        list.setCreatedBy("Elavarasan");
+
+        featuredListRepository.save(list);
+        Integer id = list.getId();
+
+        //featuredListRepository.save(list1);
+
+        featuredListRepository.delete(list);
+
+        List<FeaturedList> list1 = featuredListRepository.findAll();
+
+        Optional<FeaturedList> existingList = featuredListRepository.findById(id);
+
+//        assertEquals(7, list1.size());
+        assertThat(existingList).isEmpty();
+
     }
 }

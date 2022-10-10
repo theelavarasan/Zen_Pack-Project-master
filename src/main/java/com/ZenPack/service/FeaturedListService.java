@@ -1,10 +1,9 @@
 package com.ZenPack.service;
 
 import com.ZenPack.model.FeaturedList;
-import com.ZenPack.model.ZenPack;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FeaturedListService {
 
@@ -19,4 +18,14 @@ public interface FeaturedListService {
 //
 //
 ////    ResponseEntity<FeaturedList> saveFeauturedList(FeaturedList list);
+
+    FeaturedList updateList(FeaturedList list, int id);
+
+//    void deleteMovie(int id);
+
+//    FeaturedList updateList(FeaturedList updateList);
+
+    FeaturedList updatedList(FeaturedList updatedList);
+
+    Optional<FeaturedList> getListById(int listId);
 }

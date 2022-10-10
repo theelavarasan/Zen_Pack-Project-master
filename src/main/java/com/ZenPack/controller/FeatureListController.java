@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -32,6 +33,42 @@ public class FeatureListController {
     @ResponseStatus(HttpStatus.OK)
     public List<FeaturedList> findByName(@RequestParam String keyword){
         return service.findByKeyword(keyword);
+    }
+
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<FeaturedList> getList(@PathVariable int id){
+        return service.getListById(id);
+    }
+
+//    @PutMapping("/update_list/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public FeaturedList updateList(@PathVariable int id,@RequestBody FeaturedList list){
+//        return service.updateList(list,id);
+//    }
+
+    @DeleteMapping("/deleteList/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id){
+        service.deleteList(id);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<FeaturedList> updateEmployee(@PathVariable("id") int listId,
+                                                   @RequestBody FeaturedList featuredList){
+        return service.getListById(listId)
+                .map(savedList -> {
+
+                    savedList.setFeatureName(featuredList.getFeatureName());
+                    savedList.setFeatureUrl(featuredList.getFeatureUrl());
+                    savedList.setCreatedTime(featuredList.getCreatedTime());
+                    savedList.setCreatedBy(featuredList.getCreatedBy());
+
+                    FeaturedList updatedList = service.updatedList(savedList);
+                    return new ResponseEntity<>(updatedList, HttpStatus.OK);
+
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

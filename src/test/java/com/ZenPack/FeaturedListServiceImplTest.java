@@ -2,21 +2,16 @@ package com.ZenPack;
 
 import com.ZenPack.model.FeaturedList;
 import com.ZenPack.repository.FeaturedListRepository;
-import com.ZenPack.service.FeaturedListServiceImpl;
+import com.ZenPack.service.Impl.FeaturedListServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,8 +29,7 @@ public class FeaturedListServiceImplTest {
     @InjectMocks
     private FeaturedListServiceImpl featuredListServiceImpl;
 
-//    @Autowired
-//    private FeaturedListService service;
+
 
     private FeaturedList list;
     private FeaturedList list1;

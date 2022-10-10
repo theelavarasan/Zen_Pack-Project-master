@@ -47,9 +47,6 @@ public class FeaturedListRepositoryTest {
         list.setId(1);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
-//        list.setCreatedTime(LocalDate.of(2022, Month.OCTOBER,06));
-//        list.setCreatedTime(ZonedDateTime.now().toLocalDateTime());
-//        list.setCreatedTime(Date.from(inst));
         list.setCreatedBy("Elavarasan");
         FeaturedList newList = featuredListRepository.save(list);
         assertNotNull(newList);
@@ -96,8 +93,6 @@ public class FeaturedListRepositoryTest {
 
         featuredListRepository.save(list);
         Integer id = list.getId();
-
-        //featuredListRepository.save(list1);
 
         featuredListRepository.delete(list);
 

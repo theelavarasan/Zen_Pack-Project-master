@@ -3,8 +3,7 @@ package com.ZenPack;
 import com.ZenPack.controller.FeatureListController;
 import com.ZenPack.model.FeaturedList;
 import com.ZenPack.repository.FeaturedListRepository;
-import com.ZenPack.service.FeaturedListService;
-import com.ZenPack.service.FeaturedListServiceImpl;
+import com.ZenPack.service.Impl.FeaturedListServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,10 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
@@ -26,12 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.*;
 
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
@@ -73,18 +65,14 @@ public class FeatureListControllerTest {
         list.setId(1);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
-//        list.setCreatedTime(LocalDate.of(2022,Month.OCTOBER,06));
 //        list.setCreatedTime(Date.from(inst));
-//        list.setCreatedTime(LocalDateTime.now());
         list.setCreatedBy("Elavarasan");
 
         FeaturedList list1=new FeaturedList();
         list.setId(2);
         list.setFeatureName("Project Summary");
         list.setFeatureUrl(null);
-//        list.setCreatedTime(LocalDate.of(2022,Month.OCTOBER,06));
 //        list.setCreatedTime(Date.from(inst));
-//        list.setCreatedTime(LocalDateTime.now());
         list.setCreatedBy("Elavarasan");
 
 
@@ -97,7 +85,6 @@ public class FeatureListControllerTest {
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
         list.setCreatedTime(dateOne);
-//        list.setCreatedTime(dateOne.from(inst));
         list.setCreatedBy("Elavarasan");
 
         when(service.save(any(FeaturedList.class))).thenReturn(list);
@@ -108,7 +95,6 @@ public class FeatureListControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.featureName", CoreMatchers.is(list.getFeatureName())))
                 .andExpect(jsonPath("$.featureUrl", CoreMatchers.is(list.getFeatureUrl())))
-//                .andExpect(jsonPath("$.createdTime", CoreMatchers.is(dateOne.getTime())))
                 .andExpect(jsonPath("$.createdBy", CoreMatchers.is(list.getCreatedBy())));
 
     }
@@ -126,16 +112,6 @@ public class FeatureListControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()",CoreMatchers.is(featuredListList.size())));
     }
-//    @Test
-//    void shouldFetchOneListById() throws Exception {
-//
-//        when(service.getListById(anyInt())).thenReturn(list);
-//
-//        this.mockMvc.perform(get("/api/v1/{id}", 2))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.featureName", CoreMatchers.is(list.getFeatureName())))
-//                .andExpect(jsonPath("$.featureUrl", CoreMatchers.is(list.getFeatureUrl())));
-//    }
 
     @Test
     void shouldDeleteList() throws Exception {
@@ -144,12 +120,10 @@ public class FeatureListControllerTest {
 
         this.mockMvc.perform(delete("/api/v1/deleteList/{id}", 2))
                 .andExpect(status().isNoContent());
-
     }
 
     @Test
     public void shouldUpdateList() throws Exception{
-        // given - precondition or setup
         int ListId = 2;
         FeaturedList savedList = FeaturedList.builder()
                 .featureName("Project Summary")
@@ -166,13 +140,10 @@ public class FeatureListControllerTest {
         given(service.updatedList(any(FeaturedList.class)))
                 .willAnswer((invocation)-> invocation.getArgument(0));
 
-        // when -  action or the behaviour that we are going test
         ResultActions response = mockMvc.perform(put("/api/v1/{id}", ListId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedList)));
 
-
-        // then - verify the output
         response.andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.featureName",CoreMatchers.is(updatedList.getFeatureName())));

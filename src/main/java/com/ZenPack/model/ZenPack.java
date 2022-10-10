@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +29,10 @@ public class ZenPack {
     private String updatedBy;
     @Column(name = "updated_time")
     private Date updatedTime=new Date();
+
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "zen_pack_id")
+    private List<Menu> menus;
 
 
 }

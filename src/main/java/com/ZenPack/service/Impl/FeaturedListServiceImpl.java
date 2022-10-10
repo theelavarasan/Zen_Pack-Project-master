@@ -1,8 +1,11 @@
-package com.ZenPack.service;
+package com.ZenPack.service.Impl;
 
 import com.ZenPack.model.FeaturedList;
 import com.ZenPack.repository.FeaturedListRepository;
+import com.ZenPack.service.Services.FeaturedListService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +14,13 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class FeaturedListServiceImpl implements FeaturedListService  {
+public class FeaturedListServiceImpl implements FeaturedListService {
 
 
     @Autowired
     private FeaturedListRepository repository;
+
+    private static final Logger logger = LoggerFactory.getLogger(FeaturedListServiceImpl.class);
 
     @Override
     public FeaturedList save(FeaturedList featuredList) {

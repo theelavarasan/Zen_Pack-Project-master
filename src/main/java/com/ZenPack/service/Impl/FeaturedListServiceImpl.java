@@ -1,5 +1,6 @@
 package com.ZenPack.service.Impl;
 
+import com.ZenPack.Dto.FeaturedListDto;
 import com.ZenPack.model.FeaturedList;
 import com.ZenPack.repository.FeaturedListRepository;
 import com.ZenPack.service.Services.FeaturedListService;
@@ -25,7 +26,6 @@ public class FeaturedListServiceImpl implements FeaturedListService {
     @Override
     public FeaturedList save(FeaturedList featuredList) {
         return repository.save(featuredList);
-//         new ResponseEntity<>(featuredList,HttpStatus.CREATED);
     }
 
     //Get the Feature_List

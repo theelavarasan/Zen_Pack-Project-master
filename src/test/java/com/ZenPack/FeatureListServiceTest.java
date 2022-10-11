@@ -39,7 +39,7 @@ public class FeatureListServiceTest {
     @BeforeEach
     public void setUp(){
         list= FeaturedList.builder()
-                .id(1)
+                .featureId(1)
                 .featureName("Project Management")
                 .featureUrl(null)
                 .createdTime(Date.from(inst))
@@ -50,7 +50,7 @@ public class FeatureListServiceTest {
     @Test
     @DisplayName("Junit Test for Save List")
     void saveList(){
-        given(repository.findById(list.getId()))
+        given(repository.findById(list.getFeatureId()))
                 .willReturn(Optional.empty());
 
         given(repository.save(list)).willReturn(list);
@@ -69,7 +69,7 @@ public class FeatureListServiceTest {
     public void givenFeatureList_whenGetAllFeatureList_thenReturnFeatureList(){
 
         FeaturedList list1 = FeaturedList.builder()
-                .id(1)
+                .featureId(1)
                 .featureName("Project Management")
                 .featureUrl(null)
                 .createdTime(Date.from(inst))
@@ -77,7 +77,7 @@ public class FeatureListServiceTest {
                 .build();
 
         FeaturedList list2 = FeaturedList.builder()
-                .id(2)
+                .featureId(2)
                 .featureName("Project Summary")
                 .featureUrl(null)
                 .createdTime(Date.from(inst))

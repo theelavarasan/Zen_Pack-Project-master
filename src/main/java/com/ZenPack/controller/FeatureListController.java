@@ -1,5 +1,6 @@
 package com.ZenPack.controller;
 
+import com.ZenPack.Dto.FeaturedListDto;
 import com.ZenPack.model.FeaturedList;
 import com.ZenPack.service.Impl.FeaturedListServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +38,19 @@ public class FeatureListController {
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Optional<FeaturedList> getList(@PathVariable int id){
+    public Optional<FeaturedList> getList(@PathVariable Integer id){
         return service.getListById(id);
     }
 
 
     @DeleteMapping("/deleteList/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable Integer id){
         service.deleteList(id);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<FeaturedList> updateEmployee(@PathVariable("id") int listId,
+    public ResponseEntity<FeaturedList> updateEmployee(@PathVariable("id") Integer listId,
                                                    @RequestBody FeaturedList featuredList){
         return service.getListById(listId)
                 .map(savedList -> {

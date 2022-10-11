@@ -62,14 +62,14 @@ public class FeatureListControllerTest {
     @BeforeEach
     void init(){
         FeaturedList list=new FeaturedList();
-        list.setId(1);
+        list.setFeatureId(1);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
 //        list.setCreatedTime(Date.from(inst));
         list.setCreatedBy("Elavarasan");
 
         FeaturedList list1=new FeaturedList();
-        list.setId(2);
+        list.setFeatureId(2);
         list.setFeatureName("Project Summary");
         list.setFeatureUrl(null);
 //        list.setCreatedTime(Date.from(inst));
@@ -81,7 +81,7 @@ public class FeatureListControllerTest {
     @Test
     void shouldCreateNewFeatureListTest() throws Exception {
         FeaturedList list=new FeaturedList();
-        list.setId(1);
+        list.setFeatureId(1);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
         list.setCreatedTime(dateOne);

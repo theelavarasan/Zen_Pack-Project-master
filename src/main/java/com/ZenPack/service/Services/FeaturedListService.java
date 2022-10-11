@@ -1,5 +1,6 @@
 package com.ZenPack.service.Services;
 
+import com.ZenPack.Dto.FeaturedListDto;
 import com.ZenPack.model.FeaturedList;
 
 import java.util.List;

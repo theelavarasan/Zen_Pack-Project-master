@@ -44,13 +44,13 @@ public class FeaturedListRepositoryTest {
     @DisplayName("It Should save the list to database")
     void save(){
         FeaturedList list=new FeaturedList();
-        list.setId(1);
+        list.setFeatureId(1);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
         list.setCreatedBy("Elavarasan");
         FeaturedList newList = featuredListRepository.save(list);
         assertNotNull(newList);
-        assertThat(newList.getId()).isNotEqualTo(null);
+        assertThat(newList.getFeatureId()).isNotEqualTo(null);
     }
 
     @Test
@@ -67,14 +67,14 @@ public class FeaturedListRepositoryTest {
     @DisplayName("It should update the list name with PROJECT")
     void updateList() {
         FeaturedList list=new FeaturedList();
-        list.setId(2);
+        list.setFeatureId(2);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
         list.setCreatedBy("Elavarasan");
 
         featuredListRepository.save(list);
 
-        FeaturedList existingMovie = featuredListRepository.findById(list.getId()).get();
+        FeaturedList existingMovie = featuredListRepository.findById(list.getFeatureId()).get();
         existingMovie.setFeatureName("Project Management");
         FeaturedList updatedList = featuredListRepository.save(existingMovie);
 
@@ -86,13 +86,13 @@ public class FeaturedListRepositoryTest {
     void deleteList() {
 
         FeaturedList list=new FeaturedList();
-        list.setId(30);
+        list.setFeatureId(30);
         list.setFeatureName("Project Management");
         list.setFeatureUrl(null);
         list.setCreatedBy("Elavarasan");
 
         featuredListRepository.save(list);
-        Integer id = list.getId();
+        Integer id = list.getFeatureId();
 
         featuredListRepository.delete(list);
 

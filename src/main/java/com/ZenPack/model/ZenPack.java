@@ -1,9 +1,11 @@
 package com.ZenPack.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -13,12 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "zen_pack")
-@Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ZenPack {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "zen_pack_id")
+    private Integer zenPackId;
     @Column(name = "zen_pack_name")
     private String name;
     @Column(name = "created_by")
@@ -33,6 +36,10 @@ public class ZenPack {
     @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "zen_pack_id")
     private List<Menu> menus;
+//    private Collection<FeaturedList> featuredLists;
 
+//    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+//    @JoinColumn(name = "zen_pack_id")
+//    private List<FeaturedList> features;
 
 }
